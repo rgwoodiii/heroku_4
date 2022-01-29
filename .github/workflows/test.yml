@@ -27,6 +27,9 @@ jobs:
         uses: actions/checkout@v2
       - name: Setup DVC
         uses: iterative/setup-dvc@v1
+      - name: DVC pull
+        run: |
+          dvc pull 
       - name: Run Flake8
         run: flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
       - name: Run pytest
