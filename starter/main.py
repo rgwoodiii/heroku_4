@@ -47,19 +47,16 @@ async def greet_user():
 
 @app.post("/predict/")
 async def predict(data1: ClassifierFeatureIn):
-#    data = pd.DataFrame.from_dict([data1])
-    df = pd.read_csv('starter/data/census_without_spaces.csv')
+    df = pd.DataFrame.from_dict([data1])
+    
     # transform 
-    x = ohe.transform(df.drop(['salary'], axis=1).values)
+    x = ohe.transform(df.values)
     
     # predict
-    mean = np.mean(df['education-num'])
     pred = model.predict(x)
     pred = pred[0]
     pred = str(np.where(pred == 1, '>50K', '<=50K'))
-    return {'pred': pred}#pred[0]#np.mean(df['fnlgt'])#"hey"# df.loc[1,'education-num']#{
-#        "prediction": pred[0]
- #   }
+    return {'pred': pred}
 
 """
 # pydantic output of the model
