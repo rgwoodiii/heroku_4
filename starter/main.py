@@ -3,7 +3,9 @@ import numpy as np
 import pandas as pd
 import os
 from fastapi import FastAPI
-from typing import Union, List
+from typing import Union, List, Optional
+
+
 from pydantic import BaseModel, Field
 import uvicorn
 from joblib import load
@@ -13,16 +15,8 @@ import sys
 
 # load model
 model = load("starter/model/models/trainedmodel.pkl")
+ohe = load("starter/model/models/one_hot_encoding.joblib")
 
-
-# instantiate app with fastapi
-app = FastAPI()
-
-    
-# greeting
-@app.get("/")
-async def greet_user():
-    return {"Welcome!"}
 
 # models with pydantic
 class ClassifierFeatureIn(BaseModel):
@@ -39,15 +33,31 @@ class ClassifierFeatureIn(BaseModel):
     capital_gain: int = Field(..., example=2500, alias="capital-gain")
     capital_loss: int = Field(..., example=0, alias="capital-loss")
     hours_per_week: int = Field(..., example=40, alias="hours-per-week")
-    native_country: str = Field(..., example="United-States", alias="native-country")
+    native_country: str = Field(..., example="United-States", alias="native-country")     
+        
+# instantiate app with fastapi
+app = FastAPI()
 
-@app.post("/predict")
-async def predict():
-    #df = pd.read_csv('starter/data/census_without_spaces.csv')
+    
+# greeting
+@app.get("/")
+async def greet_user():
+    return {"Welcome!"}
+
+
+@app.post("/predict/")
+async def predict(data1: ClassifierFeatureIn):
+#    data = pd.DataFrame.from_dict([data1])
+    df = pd.read_csv('starter/data/census_without_spaces.csv')
+    # transform 
+    x = ohe.transform(df.drop(['salary'], axis=1).values)
+    
     # predict
-    #pred, y = inference(data1)
-    return 
-    "ok it's working"#{
+    mean = np.mean(df['education-num'])
+    pred = model.predict(x)
+    pred = pred[0]
+    pred = str(np.where(pred == 1, '>50K', '<=50K'))
+    return {'pred': pred}#pred[0]#np.mean(df['fnlgt'])#"hey"# df.loc[1,'education-num']#{
 #        "prediction": pred[0]
  #   }
 

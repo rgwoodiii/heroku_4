@@ -1,1 +1,1 @@
-{'value': ' Male', 'precision': 0.786065823031168, 'recall': 0.7699761297427692, 'fbeta': 0.8174884090875227}{'value': ' Female', 'precision': 0.8347509946494718, 'recall': 0.7635296557265858, 'fbeta': 0.9205387709133629}
+{'value': ' Male', 'precision': 0.3424736117485085, 'recall': 0.5, 'fbeta': 0.5007022241608943}{'value': ' Female', 'precision': 0.4508120649651972, 'recall': 0.5, 'fbeta': 0.8292415433374782}

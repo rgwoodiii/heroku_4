@@ -3,31 +3,30 @@ from training import train_test_model, inference, compute_model_metrics
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
-from joblib import dump
+from joblib import dump, load
 import os.path
 import sys
+import numpy as np
 
 # load data
 df = pd.read_csv("starter/data/census_without_spaces.csv")
+model = load("starter/model/models/trainedmodel.pkl")
+ohe = load("starter/model/models/one_hot_encoding.joblib")
+df['salary'] = np.where(df['salary'] == ' >50K', 1, 0)
 
 report = []
 # slice
+
 for value in df.sex.unique():
     data_slice = df[df["sex"] == value]
-    
     # split
     x = data_slice.drop(['salary'], axis=1)
-    x = pd.get_dummies(x)
     y = data_slice['salary']
-
+    # transform
+    x = ohe.transform(x.values)
+    
     # train/test split
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.20)
-
-    
-    # model
-    model = RandomForestClassifier(n_estimators=100)
-    #fit 
-    model.fit(x_train,y_train)
     
     # pred 
     pred = model.predict(x_test)

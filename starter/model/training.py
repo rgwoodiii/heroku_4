@@ -5,6 +5,10 @@ from sklearn.ensemble import RandomForestClassifier
 from joblib import dump
 from sklearn.metrics import precision_score, recall_score, fbeta_score
 from joblib import load
+from sklearn.preprocessing import OneHotEncoder
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import f1_score
+import numpy as np
 
 df = pd.read_csv("starter/data/census_without_spaces.csv")
 
@@ -29,13 +33,19 @@ def train_test_model(data=None):
     else:
         df = data
     # separate target
+    df['salary'] = np.where(df['salary'] == ' >50K', 1, 0)
     x = df.drop(['salary'], axis=1)
-    x = pd.get_dummies(x)
     y = df['salary']
     # train/test split
-    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.20)
+    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.20, random_state=84)
+    
+    # one hot encoding
+    ohe = OneHotEncoder(handle_unknown="ignore", sparse=False)
+    x_train = ohe.fit_transform(x_train.values)
+    x_test = ohe.transform(x_test.values)
+    
     # model
-    model = RandomForestClassifier(n_estimators=100)
+    model = RandomForestClassifier(n_estimators=5)
     # fit
     model.fit(x_train, y_train)
     print(model.score(x_test, y_test))
@@ -62,20 +72,26 @@ def save_model(data=None):
     else:
         df = data
     # separate target
+    df['salary'] = np.where(df['salary'] == ' >50K', 1, 0)
     x = df.drop(['salary'], axis=1)
-    x = pd.get_dummies(x)
     y = df['salary']
-
     # train/test split
-    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.20)
+    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.20, random_state=84)
+    
+    # one hot encoding
+    ohe = OneHotEncoder(handle_unknown="ignore", sparse=False)
+    x_train = ohe.fit_transform(x_train.values)
+    x_test = ohe.transform(x_test.values)
+    
     # model
-    model = RandomForestClassifier(n_estimators=100)
-
+    model = RandomForestClassifier(n_estimators=5)
     # fit
     model.fit(x_train, y_train)
 
     # save model
+    dump(ohe, "starter/model/models/one_hot_encoding.joblib")
     dump(model, "starter/model/models/trainedmodel.pkl")
+    print('models saved')
 
 
 def inference(df):
@@ -93,19 +109,23 @@ def inference(df):
         Predictions from the model.
     """
     # load model
+    ohe = load("starter/model/models/one_hot_encoding.joblib")
     model = load("starter/model/models/trainedmodel.pkl")
 
     # prep data
-    x = df.drop(['salary'], axis=1)
-    x = pd.get_dummies(x)
-    y = df['salary']
+    df['salary'] = np.where(df['salary'] == ' >50K', 1, 0)
 
+    x = df.drop(['salary'], axis=1)
+    y = df['salary']
+    #transform
+    x = ohe.transform(x.values)
     # predict
     pred = model.predict(x)
     return pred, y
+    
 
 
-def compute_model_metrics(pred, y_test):
+def compute_model_metrics(pred, y):
     """
     Validates the trained machine learning model using\
     precision, recall, and F1.
@@ -121,16 +141,16 @@ def compute_model_metrics(pred, y_test):
     recall : float
     fbeta : float
     """
-    fbeta = fbeta_score(y_test, pred, average='weighted', beta=0.5)
-    precision = precision_score(y_test, pred, average=None)
-    recall = recall_score(y_test, pred, average=None)
-
+    fbeta = fbeta_score(y, pred, average='weighted', beta=0.5)
+    precision = precision_score(y, pred, average=None)
+    recall = recall_score(y, pred, average=None, zero_division=1)
     return precision, recall, fbeta
 
 
 if __name__ == "__main__":
     train_test_model(df)
-    pred, y_test = inference(df)
-    compute_model_metrics(pred, y_test)
+    save_model(df)
+    pred, y = inference(df)
+    compute_model_metrics(pred, y)
 
 
