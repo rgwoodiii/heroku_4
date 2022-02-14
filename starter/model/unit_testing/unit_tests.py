@@ -46,10 +46,10 @@ def test_perf(data):
     ohe = load("starter/model/models/one_hot_encoding.joblib")
     
     # prep data
-    df['salary'] = np.where(df['salary'] == ' >50K', 1, 0)
+    data['salary'] = np.where(data['salary'] == ' >50K', 1, 0)
 
-    x = df.drop(['salary'], axis=1)
-    y = df['salary']
+    x = data.drop(['salary'], axis=1)
+    y = data['salary']
     
     #transform
     x = ohe.transform(x.values)
@@ -67,10 +67,10 @@ def test_inference(data):
     ohe = load("starter/model/models/one_hot_encoding.joblib")
     
     # prep data
-    df['salary'] = np.where(df['salary'] == ' >50K', 1, 0)
+    data['salary'] = np.where(data['salary'] == ' >50K', 1, 0)
 
-    x = df.drop(['salary'], axis=1)
-    y = df['salary']
+    x = data.drop(['salary'], axis=1)
+    y = data['salary']
     
     #transform
     x = ohe.transform(x.values)
@@ -86,10 +86,10 @@ def test_compute_model_metrics(data):
     ohe = load("starter/model/models/one_hot_encoding.joblib")
     
     # prep data
-    df['salary'] = np.where(df['salary'] == ' >50K', 1, 0)
+    data['salary'] = np.where(data['salary'] == ' >50K', 1, 0)
 
-    x = df.drop(['salary'], axis=1)
-    y = df['salary']
+    x = data.drop(['salary'], axis=1)
+    y = data['salary']
     
     #transform
     x = ohe.transform(x.values)
