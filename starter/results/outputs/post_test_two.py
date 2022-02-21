@@ -3,7 +3,9 @@ import json
 
 
 # URL that resolves to workspace
-URL = "http://127.0.0.1:8000/predict/"
+#URL = "http://127.0.0.1:8000/predict/"
+URL = "https://udacity-api.herokuapp.com/predict/"
+
 
 # call APIs
 headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
