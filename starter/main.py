@@ -22,7 +22,6 @@ ohe = load("starter/model/models/one_hot_encoding.joblib")
 class ClassifierFeatureIn(BaseModel):
     age: int = Field(..., example=50)
     workclass: str = Field(..., example="State-gov")
-    fnlgt: int = Field(..., example=77516)
     education: str = Field(..., example="Bachelors")
     education_num: int = Field(..., example=13, alias="education-num")
     marital_status: str = Field(..., example="Never-married", alias="marital-status")

@@ -48,7 +48,7 @@ def test_perf(data):
     # prep data
     data['salary'] = np.where(data['salary'] == ' >50K', 1, 0)
 
-    x = data.drop(['salary'], axis=1)
+    x = data.drop(['salary', 'fnlgt'], axis=1)
     y = data['salary']
     
     #transform
@@ -69,7 +69,7 @@ def test_inference(data):
     # prep data
     data['salary'] = np.where(data['salary'] == ' >50K', 1, 0)
 
-    x = data.drop(['salary'], axis=1)
+    x = data.drop(['salary', 'fnlgt'], axis=1)
     y = data['salary']
     
     #transform
@@ -88,7 +88,7 @@ def test_compute_model_metrics(data):
     # prep data
     data['salary'] = np.where(data['salary'] == ' >50K', 1, 0)
 
-    x = data.drop(['salary'], axis=1)
+    x = data.drop(['salary', 'fnlgt'], axis=1)
     y = data['salary']
     
     #transform

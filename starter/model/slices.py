@@ -20,7 +20,7 @@ report = []
 for value in df.sex.unique():
     data_slice = df[df["sex"] == value]
     # split
-    x = data_slice.drop(['salary'], axis=1)
+    x = data_slice.drop(['salary', 'fnlgt'], axis=1)
     y = data_slice['salary']
     # transform
     x = ohe.transform(x.values)

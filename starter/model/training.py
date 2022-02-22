@@ -34,7 +34,7 @@ def train_test_model(data=None):
         df = data
     # separate target
     df['salary'] = np.where(df['salary'] == ' >50K', 1, 0)
-    x = df.drop(['salary'], axis=1)
+    x = df.drop(['salary', 'fnlgt'], axis=1)
     y = df['salary']
     # train/test split
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.20, random_state=84)
@@ -73,7 +73,7 @@ def save_model(data=None):
         df = data
     # separate target
     df['salary'] = np.where(df['salary'] == ' >50K', 1, 0)
-    x = df.drop(['salary'], axis=1)
+    x = df.drop(['salary', 'fnlgt'], axis=1)
     y = df['salary']
     # train/test split
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.20, random_state=84)
@@ -115,7 +115,7 @@ def inference(df):
     # prep data
     df['salary'] = np.where(df['salary'] == ' >50K', 1, 0)
 
-    x = df.drop(['salary'], axis=1)
+    x = df.drop(['salary', 'fnlgt'], axis=1)
     y = df['salary']
     #transform
     x = ohe.transform(x.values)
