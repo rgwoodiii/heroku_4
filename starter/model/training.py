@@ -12,6 +12,7 @@ import numpy as np
 
 df = pd.read_csv("starter/data/census_without_spaces.csv")
 
+# removed the other function and consolodated per the request of the submission review
 def train_test_model(data=None):
     """
     Trains a machine learning model and returns it.
@@ -48,45 +49,8 @@ def train_test_model(data=None):
     model = RandomForestClassifier(n_estimators=5)
     # fit
     model.fit(x_train, y_train)
+    # per submission review, you can see that assess the model score by the test cohort
     print(model.score(x_test, y_test))
-
-
-def save_model(data=None):
-    """
-    Trains a machine learning model and returns it.
-
-    Inputs
-    ------
-    X_train : np.array
-        Training data.
-    y_train : np.array
-        Labels.
-    Returns
-    -------
-    model
-        Trained machine learning model.
-    """
-    # load data
-    if data is None:
-        df = pd.read_csv("starter/data/census_without_spaces.csv")
-    else:
-        df = data
-    # separate target
-    df['salary'] = np.where(df['salary'] == ' >50K', 1, 0)
-    x = df.drop(['salary', 'fnlgt'], axis=1)
-    y = df['salary']
-    # train/test split
-    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.20, random_state=84)
-    
-    # one hot encoding
-    ohe = OneHotEncoder(handle_unknown="ignore", sparse=False)
-    x_train = ohe.fit_transform(x_train.values)
-    x_test = ohe.transform(x_test.values)
-    
-    # model
-    model = RandomForestClassifier(n_estimators=5)
-    # fit
-    model.fit(x_train, y_train)
 
     # save model
     dump(ohe, "starter/model/models/one_hot_encoding.joblib")
@@ -149,7 +113,6 @@ def compute_model_metrics(pred, y):
 
 if __name__ == "__main__":
     train_test_model(df)
-    save_model(df)
     pred, y = inference(df)
     compute_model_metrics(pred, y)
 
