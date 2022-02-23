@@ -12,7 +12,6 @@ headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
 payload = {
         "age": 50,
         "workclass": "State-gov",
-        "fnlgt": 77516,
         "education": "Bachelors",
         "education-num": 13,
         "marital-status": "Never-married",

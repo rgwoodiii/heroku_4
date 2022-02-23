@@ -13,7 +13,6 @@ headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
 payload = {
         "age": 38,
         "workclass": "Private",
-        "fnlgt": 374524,
         "education": " Bachelors",
         "education-num": 13,
         "marital-status": " Married-civ-spouse",
