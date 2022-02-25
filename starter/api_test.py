@@ -12,7 +12,7 @@ def client():
 def test_get(client):
     r = requests.get("https://udacity-api.herokuapp.com/")
     assert r.status_code == 200
-    assert r.json() == {"message": "Welcome!"}
+    assert r.json() == {"message": ['Welcome!']}
 
 def test_post_pos(client):
     r = requests.post("https://udacity-api.herokuapp.com/predict", json={
@@ -31,7 +31,7 @@ def test_post_pos(client):
         "native-country": "United-States"
     })
     assert r.status_code == 200
-    assert r.json() != {"prediction": "<=50K"}
+    assert r.json() != {'pred': '<=50K'} 
 
 
 def test_post_neg(client):
@@ -51,4 +51,4 @@ def test_post_neg(client):
         "native-country": " United-States"
     })
     assert r.status_code == 200
-    assert r.json() == {"prediction": "<=50K"}
+    assert r.json() == {'pred': '<=50K'} 
