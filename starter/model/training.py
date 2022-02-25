@@ -37,21 +37,33 @@ def train_test_model(data=None):
     df['salary'] = np.where(df['salary'] == ' >50K', 1, 0)
     x = df.drop(['salary', 'fnlgt'], axis=1)
     y = df['salary']
-    # train/test split
+    
+    # I am conducting the train/test split here
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.20, random_state=84)
     
-    # one hot encoding
+    # here I apply one hot encoding to train & test alike
     ohe = OneHotEncoder(handle_unknown="ignore", sparse=False)
     x_train = ohe.fit_transform(x_train.values)
     x_test = ohe.transform(x_test.values)
     
     # model
-    model = RandomForestClassifier(n_estimators=5)
-    # fit
+    model = RandomForestClassifier(n_estimators=20)
+    # fit model using training data only
     model.fit(x_train, y_train)
     # per submission review, you can see that assess the model score by the test cohort
     print(model.score(x_test, y_test))
-
+    
+    # prediction on test set
+    pred_on_test = model.predict(x_test)
+    
+    # cross validation testing using 
+    fbeta = fbeta_score(y_test, pred_on_test, average='weighted', beta=0.5)
+    precision = precision_score(y_test, pred_on_test, average=None)
+    recall = recall_score(y_test, pred_on_test, average=None, zero_division=1)    
+    print(fbeta)
+    print(precision)
+    print(recall)
+    
     # save model
     dump(ohe, "starter/model/models/one_hot_encoding.joblib")
     dump(model, "starter/model/models/trainedmodel.pkl")
