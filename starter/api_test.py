@@ -1,6 +1,6 @@
 import pytest
 from fastapi.testclient import TestClient
-from main import app
+from starter.main import app
 
 @pytest.fixture
 def client():
@@ -30,7 +30,7 @@ def test_post_pos(client):
         "native-country": "United-States"
     })
     assert r.status_code == 200
-    assert r.json() == {"prediction": " >50K"}
+    assert r.json() != {"prediction": "<=50K"}
 
 
 def test_post_neg(client):
