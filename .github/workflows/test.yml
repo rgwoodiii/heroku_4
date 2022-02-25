@@ -29,3 +29,5 @@ jobs:
         run: flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
       - name: Run pytest
         run: pytest starter/model/unit_testing/unit_tests.py
+      - name: Run api pytest
+        run: pytest starter/api_test.py
