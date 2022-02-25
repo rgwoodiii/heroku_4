@@ -1,6 +1,7 @@
 import pytest
 from fastapi.testclient import TestClient
 from main import app
+import requests
 
 @pytest.fixture
 def client():
@@ -9,12 +10,12 @@ def client():
 
 
 def test_get(client):
-    r = client.get("/")
+    r = request.get("https://udacity-api.herokuapp.com/")
     assert r.status_code == 200
     assert r.json() == {"message": "Welcome!"}
 
 def test_post_pos(client):
-    r = client.post("/", json={
+    r = request.post("https://udacity-api.herokuapp.com/predict", json={
         "age": 50,
         "workclass": "State-gov",
         "education": "Bachelors",
@@ -34,7 +35,7 @@ def test_post_pos(client):
 
 
 def test_post_neg(client):
-    r = client.post("/", json={
+    r = client.post("https://udacity-api.herokuapp.com/predict", json={
         "age": 38,
         "workclass": "Private",
         "education": " Bachelors",
