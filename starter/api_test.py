@@ -31,7 +31,7 @@ def test_post_pos(client):
         "native-country": "United-States"
     })
     assert r.status_code == 200
-    assert r.json() != {'pred': '<=50K'} 
+    assert r.json() == {'pred': '<=50K'} 
 
 
 def test_post_neg(client):
