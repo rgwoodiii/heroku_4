@@ -38,10 +38,10 @@ def train_test_model(data=None):
     x = df.drop(['salary', 'fnlgt'], axis=1)
     y = df['salary']
     
-    # I am conducting the train/test split here
+    # train/test split
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.20, random_state=84)
     
-    # here I apply one hot encoding to train & test alike
+    # one hot encoding to train & test
     ohe = OneHotEncoder(handle_unknown="ignore", sparse=False)
     x_train = ohe.fit_transform(x_train.values)
     x_test = ohe.transform(x_test.values)
@@ -50,7 +50,8 @@ def train_test_model(data=None):
     model = RandomForestClassifier(n_estimators=20)
     # fit model using training data only
     model.fit(x_train, y_train)
-    # per submission review, you can see that assess the model score by the test cohort
+    
+    # model score with test data
     print(model.score(x_test, y_test))
     
     # prediction on test set
