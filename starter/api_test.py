@@ -10,12 +10,12 @@ def client():
 
 
 def test_get(client):
-    r = request.get("https://udacity-api.herokuapp.com/")
+    r = requests.get("https://udacity-api.herokuapp.com/")
     assert r.status_code == 200
     assert r.json() == {"message": "Welcome!"}
 
 def test_post_pos(client):
-    r = request.post("https://udacity-api.herokuapp.com/predict", json={
+    r = requests.post("https://udacity-api.herokuapp.com/predict", json={
         "age": 50,
         "workclass": "State-gov",
         "education": "Bachelors",
@@ -35,7 +35,7 @@ def test_post_pos(client):
 
 
 def test_post_neg(client):
-    r = client.post("https://udacity-api.herokuapp.com/predict", json={
+    r = requests.post("https://udacity-api.herokuapp.com/predict", json={
         "age": 38,
         "workclass": "Private",
         "education": " Bachelors",
